@@ -21,13 +21,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS, KC_TRNS, KC_MPLY, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 
 	[2] = LAYOUT_60_ansi(
-        QK_BOOT, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL,  KC_HOME, KC_END,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        QK_BOOT, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, RGB_TOG, RGB_MOD,  RGB_HUI, RGB_SAI, RGB_VAI, KC_TRNS, KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, RGB_RMOD, RGB_HUD, RGB_SAD, RGB_VAD, KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, GU_TOGG, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS)
+        KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS)
 };
 
+// alt + 8,9,0 overrides
 const key_override_t alt_8_override = ko_make_basic(MOD_BIT(KC_LEFT_ALT), KC_8, KC_DEL);
 const key_override_t alt_9_override = ko_make_basic(MOD_BIT(KC_LEFT_ALT), KC_9, KC_HOME);
 const key_override_t alt_0_override = ko_make_basic(MOD_BIT(KC_LEFT_ALT), KC_0, KC_END);
@@ -38,6 +39,15 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &alt_0_override,
     NULL
 };
+
+// set default rgb matrix
+#ifdef RGB_MATRIX_ENABLE
+void keyboard_post_init_user(void) {
+    rgblight_enable_noeeprom(); // Enables RGB, without saving settings
+    rgblight_sethsv_noeeprom(HSV_MAGENTA);
+    rgblight_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+}
+#endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //this code runs before processing a button press
